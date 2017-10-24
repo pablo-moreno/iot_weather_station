@@ -1,0 +1,24 @@
+{
+  "name": "ws-server",
+  "version": "0.1.0",
+  "description": "WeatherStation server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pablo-moreno/iot_weather_station.git"
+  },
+  "author": "Pablo Moreno",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/pablo-moreno/iot_weather_station/issues"
+  },
+  "homepage": "https://github.com/pablo-moreno/iot_weather_station#readme",
+  "dependencies": {
+    "hapi": "^16.6.2",
+    "inert": "^4.2.1",
+    "mongodb": "^2.2.33"
+  }
+}

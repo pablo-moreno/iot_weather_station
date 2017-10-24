@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import {Line} from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import moment from 'moment';
+import { measuresEndpoint } from '../../config';
 
 class Graph extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class Graph extends Component {
   }
 
   _fetch_data() {
-    fetch('http://192.168.1.250:7890/measures/')
+    fetch(measuresEndpoint)
     .then((request) => {
       return request.json()
     })
