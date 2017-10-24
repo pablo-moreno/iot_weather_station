@@ -19,6 +19,7 @@
   "dependencies": {
     "hapi": "^16.6.2",
     "inert": "^4.2.1",
-    "mongodb": "^2.2.33"
+    "mongodb": "^2.2.33",
+    "socketio": "^1.0.0"
   }
 }

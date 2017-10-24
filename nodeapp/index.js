@@ -10,10 +10,12 @@ server.connection({
     port: 7890
 });
 
+let io = require('socket.io')(server.listener);
+
 server.register(require('inert'), (err) => {
     server.route({
         method: 'POST',
-        path: '/measure',
+        path: '/measure/',
         config: {
             cors: {
                 origin: ['*'],
@@ -24,6 +26,7 @@ server.register(require('inert'), (err) => {
             let data = request.payload;
             data.date = new Date();
             db.post(data).then((ok) => {
+                console.log(data)
                 reply({status: ok})
             })
             .catch((err) => {
@@ -39,32 +42,6 @@ server.register(require('inert'), (err) => {
             return reply.file('./public/index.html');
         }
     });
-    
-    /*
-    server.route({
-        method: 'GET',
-        path: '/manifest.json',
-        handler: (request, reply) => {
-            return reply.file('./public/manifest.json');
-        }
-    });
-
-    server.route({
-        method: 'GET',
-        path: '/favicon.ico',
-        handler: (request, reply) => {
-            return reply.file('./public/favicon.ico');
-        }
-    });
-
-    server.route({
-        method: 'GET',
-        path: '/service-worker.js',
-        handler: (request, reply) => {
-            return reply.file('./public/service-worker.js');
-        }
-    });
-    */
 
     server.route({
         method: 'GET',
@@ -104,4 +81,3 @@ server.register(require('inert'), (err) => {
         console.log('Server running at:', server.info.uri);
     });
 });
-

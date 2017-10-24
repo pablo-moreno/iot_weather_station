@@ -33,8 +33,10 @@ class WeatherStation:
                 'temperature': temperature,
                 'humidity': humidity
             })
+            url = '{}{}'.format(WeatherStation.SERVER_ADDRESS, 'measure/')
+            print(url)
             r = requests.post(
-                '{}{}'.format(WeatherStation.SERVER_ADDRESS, 'measure/'),
+                url,
                 data=data
             )
             self.lc.pulse()
