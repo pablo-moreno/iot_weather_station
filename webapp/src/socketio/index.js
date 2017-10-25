@@ -1,5 +1,6 @@
 import openSocket from 'socket.io-client';
-const socket = openSocket('http://0.0.0.0:7890');
+import { BASE_URL } from '../config';
+const socket = openSocket(BASE_URL);
 
 let emit = (data) => {
     console.log('emitting', data)

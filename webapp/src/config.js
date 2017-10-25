@@ -1,4 +1,4 @@
-const BASE_URL = 'http://0.0.0.0:7890';
+const BASE_URL = 'https://ws.pablomoreno.duckdns.org';
 const measuresEndpoint = `${BASE_URL}/measures/`;
 
 export {
