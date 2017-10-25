@@ -11,6 +11,7 @@
     "react-dom": "^16.0.0",
     "react-moment": "^0.6.5",
     "react-scripts": "1.0.14",
+    "socket.io-client": "^2.0.4",
     "socketio": "^1.0.0"
   },
   "scripts": {

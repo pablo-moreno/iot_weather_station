@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
 import moment from 'moment';
 import { measuresEndpoint } from '../../config';
+import { 
+  humidityGraphOptions, 
+  temperatureGraphOptions, 
+  graphOptions
+} from './config';
+import { onPostMeasure, emit } from '../../socketio';
 
 class Graph extends Component {
   constructor(props) {
@@ -9,32 +15,12 @@ class Graph extends Component {
     this.state = {
       labels: [],
       datasets: [],
-      options: {
-        responsive: true,
-        width: '80%',
-        height: '80%',
-        layout: {
-          padding: {
-            left: 50,
-            right: 50,
-            top: 20,
-            bottom: 50
-          }
-        },
-        scales: {
-          yAxes: [
-            {
-              beginAtZero: true,
-              suggestedMin: 0,
-              ticks: {
-                min: 0,
-                max: 100
-              }
-            }
-          ]
-        }
-      }
+      options: graphOptions
     };
+    onPostMeasure(null, (data) => {
+      console.log('receiving', data);
+      this._updateState(data)
+    });
   }
 
   _fetch_data() {
@@ -43,50 +29,18 @@ class Graph extends Component {
       return request.json()
     })
     .then((result) => {
-      let labels = result.map((r) => moment(r.date).format('DD-MM HH:mm'));
+      let labels = result.map((r) => {
+        return moment(r.date).format('DD-MM HH:mm');
+      });
       let temperatureData = result.map((r) => r.temperature);
       let humidityData = result.map((r) => r.humidity);
       let datasets = [
         {
-          label: 'Temperature',
-          fill: true,
-          lineTension: 0.1,
-          backgroundColor: 'rgba(230,140,140,1)',
-          borderColor: 'rgba(230,140,140,1)',
-          borderCapStyle: 'butt',
-          borderDash: [],
-          borderDashOffset: 0.0,
-          borderJoinStyle: 'miter',
-          pointBorderColor: 'rgba(230,140,140,1)',
-          pointBackgroundColor: '#fff',
-          pointBorderWidth: 1,
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: 'rgba(230,140,140,1)',
-          pointHoverBorderColor: 'rgba(220,220,220,1)',
-          pointHoverBorderWidth: 4,
-          pointRadius: 1,
-          pointHitRadius: 10,
+          ...temperatureGraphOptions,
           data: temperatureData
         },
         {
-          label: 'Humidity',
-          fill: true,
-          lineTension: 0.1,
-          backgroundColor: 'rgba(75,192,192,0.4)',
-          borderColor: 'rgba(75,192,192,1)',
-          borderCapStyle: 'butt',
-          borderDash: [],
-          borderDashOffset: 0.0,
-          borderJoinStyle: 'miter',
-          pointBorderColor: 'rgba(75,192,192,1)',
-          pointBackgroundColor: '#fff',
-          pointBorderWidth: 1,
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-          pointHoverBorderColor: 'rgba(220,220,220,1)',
-          pointHoverBorderWidth: 4,
-          pointRadius: 1,
-          pointHitRadius: 10,
+          ...humidityGraphOptions,
           data: humidityData
         }
       ]
@@ -94,6 +48,35 @@ class Graph extends Component {
         labels,
         datasets
       })
+    })
+  }
+
+  _updateState(data) {
+    let labels = this.state.labels;
+    labels.push(moment(data.date).format('DD-MM HH:mm'));
+    labels.shift();
+
+    let temperatureData = this.state.datasets[0].data;
+    temperatureData.shift();
+    temperatureData.push(data.temperature);
+
+    let humidityData = this.state.datasets[1].data;
+    humidityData.shift();
+    humidityData.push(data.humidity);
+
+    let datasets = [
+      {
+        ...temperatureGraphOptions,
+        data: temperatureData
+      },
+      {
+        ...humidityGraphOptions,
+        data: humidityData
+      }
+    ]
+    this.setState({
+      labels,
+      datasets
     })
   }
 
