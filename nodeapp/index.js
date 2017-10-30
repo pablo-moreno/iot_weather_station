@@ -25,7 +25,7 @@ server.register(require('inert'), (err) => {
 
     server.route({
         method: 'GET',
-        path: '/',
+        path: '/service-worker.js',
         handler: (request, reply) => {
             return reply.file('./public/service-worker.js');
         }

@@ -13,7 +13,7 @@ class DB {
                     if (err) {
                         reject('Error fetching the documents.');
                     }
-                  resolve(data.reverse());
+                    resolve(data.reverse());
                 });
             });
         })
